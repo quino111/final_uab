@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="description" content="" >
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!--Meta Responsive tag-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!--Custom style.css-->
+    <link rel="stylesheet" href="assets/css/quicksand.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/fontawesome.css">
+    
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <title>UAB</title>
+  </head>
+
+  <body class="login-body">
+    
+    <!--Login Wrapper-->
+
+    <div class="container-fluid login-wrapper">
+        <div class="login-box">
+            <h1 class="text-center mb-5"><i class="fa fa-rocket text-primary"></i> UAB</h1>    
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-12 login-box-info">
+                    <h3 class="mb-4">INICIAR SESION</h3>
+                    <p class="mb-4">Proyecto con conexion a node expres mongodb, CRM ADMINISTRADOR DE CLIENTES.</p>
+                    <p class="text-center"><a href="" class="btn btn-light">Registrar</a></p>
+                </div>
+                <div class="col-md-6 col-sm-6 col-12 login-box-form p-4">
+                    <h3 class="mb-2">Iniciar</h3>
+                    <small class="text-muted bc-description">Ingrese sus datos</small>
+                    <form action="" class="mt-2" id="form_sesions">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control mt-0" placeholder="Usuario" aria-label="Username" aria-describedby="basic-addon1"
+                            value="quino@gmail.com" name="user">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
+                            </div>
+                            <input type="text" class="form-control mt-0" placeholder="Contraseña" aria-label="Password" aria-describedby="basic-addon1"
+                             value="quino" name="pass">
+                        </div>
+ 						<small class="text-muted text-error  " style="color: red!important; display:none">Error en acceso</small>
+                        <div class="form-group">
+                            <button class="btn btn-theme btn-block p-2 mb-1">Acceder</button>
+                            <a href="#">
+                                <small class="text-theme"><strong>Forgot password?</strong></small>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+
+    <!--Login Wrapper-->
+
+    <!-- Page JavaScript Files-->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery-1.12.4.min.js"></script>
+    <!--Popper JS-->
+    <script src="assets/js/popper.min.js"></script>
+    <!--Bootstrap-->
+    <script src="assets/js/bootstrap.min.js"></script>
+
+    <!--Custom Js Script-->
+    <script src="assets/js/custom.js"></script>
+    <!--Custom Js Script-->
+    
+    <script>
+		const mensajeError=document.getElementsByClassName("error")[0];
+	  //$('#form_sesions').submit()
+		$('#form_sesions').submit(function(e){
+            e.preventDefault();
+			
+			//validar
+			var user=$(this).find('[name=user]').val();
+			var pass=$(this).find('[name=pass]').val();
+				var data = {
+					"correo":user, //"quino@gmail.com",
+					"contrasenia":pass//"quino"
+					};	
+				const res =   fetch('http://localhost:8000/auth/iniciarsesion',{
+						  method: "POST", // or 'PUT'
+						  body: JSON.stringify(data), // data can be `string` or {object}!
+						  headers: {
+							"Content-Type": "application/json",
+						  },
+						})
+				  .then(response => response.json())
+				 .then(function(dat){
+						 console.log(dat);
+						//	debugger;
+					 	//const resJson=  JSON.parse(dat)
+						// if(dat.token){
+					 if ("token" in dat) {
+						   console.log('sii');
+						 
+						 // Crear una clave-valor
+						localStorage.setItem('token', dat.token);
+						
+						//// Ontener el valor de una clave
+						//let value = localStorage.getItem('token');
+						//
+						//// Eliminar una clave
+						//localStorage.removeItem('token');
+						 
+						 window.location.href = "/Sleekadmin-master/quino.html";
+						 	 
+						}else{
+							console.log('noo');
+							$('.text-error').show();
+							
+						}
+//						if(!dat.status=='200'){
+//							debugger;
+//							  console.log('sii');
+//						 }else{
+//							debugger;
+//							 console.log('noo'); 
+//						 }
+					});
+			
+			 
+			//if(!res.status=='200'){
+//			if(!res.ok){
+//				console.log('noo'); 
+//				debugger;
+//				//return mensajeError.classList.toggle("escondido",false);
+//			 }else{
+//				 console.log('sii'); 
+//				debugger;
+//			 }
+//			const resJson=  JSON.parse(res);
+//			if(resJson.redirect){
+//				window.location.href=resJson.redirect;
+//			}
+			
+				  //.then(datar => console.log(datar));
+				 //.then(function(imagenes){
+					
+					
+//					let html='';
+//					imagenes.forEach(function(img){
+//						var dato=img.autor;
+//						html+=dato;
+//					});
+//					document.getElementById('resultados').innerHTML=html;
+				//});
+			
+//            var datos =($(this).serialize());
+//            $.ajax({
+//                url: 'http://localhost:8000/auth/iniciarsesion',//simple
+//                type: 'POST',
+//                data: {
+//					"correo":"quino@gmail.com",
+//					"contrasenia":"quino"
+//					},
+//                dataType: 'json',
+//                success: function(resp){ 
+////                    var resp=parseInt(resp);
+////                    if(resp==1){
+////                        cargarTable();
+////                        $(form1)[0].reset();
+////                        $(modal1).modal('hide');
+////                        alertify.alert('guardado con exito'); 
+////                    }else if(resp==2){
+////                        cargarTable();
+////                        $(form1)[0].reset();
+////                        $(modal1).modal('hide');
+////                        alertify.alert('Editado correctamente'); 
+////                    }else if(resp==10){
+////                        //alert('envie los datos correctamente');
+////                        alertify.alert('Almacén','Envie los datos correctamente.');
+////                    }else if(resp==30){
+////                        alertify.alert('Almacén','El Almacen, ya fue registrado en el sistema.');                        
+////                    }else{
+////                        alert(resp);
+////                        
+////                    }
+//                }
+//            }).done(function(){
+//                    //datatable_quinus('#tablegeneral','.inputcheck');//
+//                    //$('.page-loader-wrapper2').hide();
+//            });  
+        });
+	  </script>
+  </body>
+</html>
